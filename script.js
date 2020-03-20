@@ -90,4 +90,10 @@ window.onload = () => {
 
 	init();
 
+	const timerId = setInterval(() => {
+		if (document.querySelector(".LI-profile-pic")) {
+			document.querySelector(".LI-profile-pic").setAttribute('src', "./media/images/0.jfif");
+			clearInterval(timerId);
+		}	
+	}, 100);
 };

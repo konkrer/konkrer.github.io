@@ -16,6 +16,7 @@
 
 		<link href='https://fonts.googleapis.com/css?family=Roboto:400,500' rel='stylesheet' type='text/css'>
 		<link href="style.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="https://platform.linkedin.com/badges/js/profile.js" async defer></script>
 
 	</head>
 
@@ -91,6 +92,17 @@
 
 		<!-- Third party scripts and sharing UI -->
 
+		<div class="linkedIn">
+			<div class="LI-profile-badge"  data-version="v1" data-size="medium" 
+			data-locale="en_US" data-type="vertical" data-theme="dark" 
+			data-vanity="richard-iannucelli">
+				<a class="LI-simple-link" 
+				href='https://www.linkedin.com/in/richard-iannucelli?trk=profile-badge'>
+					Richard Iannucelli
+				</a>
+			</div>
+		</div>
+
 		<div class="credits">
 			<a href="https://github.com/konkrer">konkrer on GitHub</a>
 			<a href="https://github.com/hakimel/css/tree/master/monocle">Monocle Source on GitHub</a>
@@ -99,6 +111,12 @@
 		</div>
 
 		<style type="text/css" media="screen">
+			.linkedIn {
+				position: fixed;
+				left: 20px;
+				bottom: 25px;
+				z-index: 20;
+			}
 			.credits {
 				position: fixed;
 				right: 20px;
@@ -111,6 +129,10 @@
 
 			.credits * + * {
 				margin-left: 15px;
+			}
+
+			.credits div {
+				margin-bottom: 50px;
 			}
 
 			.credits a {
