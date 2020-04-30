@@ -1,99 +1,96 @@
 window.onload = () => {
+  const wrapper = document.querySelector('.page-wrapper');
 
-	const wrapper = document.querySelector( '.page-wrapper' );
+  const originalList = document.querySelector('.list-wrapper');
+  const originalListItems = originalList.innerHTML;
+  originalList.parentNode.removeChild(originalList);
 
-	const originalList = document.querySelector( '.list-wrapper' );
-	const originalListItems = originalList.innerHTML;
-	originalList.parentNode.removeChild( originalList );
+  // Top list
+  const listA = document.createElement('div');
+  listA.className = 'list-wrapper list-a';
+  listA.innerHTML = originalListItems;
+  wrapper.appendChild(listA);
 
-	// Top list
-	const listA = document.createElement( 'div' );
-	listA.className = 'list-wrapper list-a';
-	listA.innerHTML = originalListItems;
-	wrapper.appendChild( listA );
+  // Monocle list
+  const listB = document.createElement('div');
+  listB.className = 'list-wrapper list-b';
+  listB.innerHTML = originalListItems;
+  wrapper.appendChild(listB);
 
-	// Monocle list
-	const listB = document.createElement( 'div' );
-	listB.className = 'list-wrapper list-b';
-	listB.innerHTML = originalListItems;
-	wrapper.appendChild( listB );
+  // Bottom list
+  const listC = document.createElement('div');
+  listC.className = 'list-wrapper list-c';
+  listC.innerHTML = originalListItems;
+  wrapper.appendChild(listC);
 
-	// Bottom list
-	const listC = document.createElement( 'div' );
-	listC.className = 'list-wrapper list-c';
-	listC.innerHTML = originalListItems;
-	wrapper.appendChild( listC );
+  const listAInner = listA.querySelector('.list');
+  const listCInner = listC.querySelector('.list');
+  const listBInner = listB.querySelector('.list');
 
-	const listAInner = listA.querySelector( '.list' );
-	const listCInner = listC.querySelector( '.list' );
-	const listBInner = listB.querySelector( '.list' );
+  const rowHeight = listA.querySelector('.list-item').offsetHeight;
+  const listAScrollheight = listAInner.scrollHeight;
+  const listBScrollheight = listBInner.scrollHeight;
 
-	const rowHeight = listA.querySelector( '.list-item' ).offsetHeight;
-	const listAScrollheight = listAInner.scrollHeight;
-	const listBScrollheight = listBInner.scrollHeight;
+  let listAHeight = 0,
+    listBHeight = rowHeight * 2,
+    listCHeight = 0;
 
-	let listAHeight = 0,
-		listBHeight = rowHeight * 2,
-		listCHeight = 0;
+  let scrollPosition = 0;
 
-	let scrollPosition = 0;
+  function init() {
+    window.addEventListener('resize', layout);
+    window.addEventListener('scroll', syncScrollPosition);
 
-	function init() {
+    wrapper.style.visibility = '';
 
-		window.addEventListener( 'resize', layout );
-		window.addEventListener( 'scroll', syncScrollPosition );
+    layout();
 
-		wrapper.style.visibility = '';
+    syncScrollPosition();
+  }
 
-		layout();
+  function layout() {
+    let height = window.innerHeight;
 
-		syncScrollPosition();
+    listAHeight = (height - listBHeight) / 2;
+    listAHeight = Math.floor(listAHeight / rowHeight) * rowHeight;
 
-	}
+    listCHeight = height - (listAHeight + listBHeight);
 
-	function layout() {
+    listA.style.height = listAHeight + 'px';
+    listB.style.height = listBHeight + 'px';
+    listB.style.top = listAHeight + 'px';
+    listC.style.height = listCHeight + 'px';
 
-		let height = window.innerHeight;
+    sync();
+  }
 
-		listAHeight = ( height - listBHeight ) / 2;
-		listAHeight = Math.floor( listAHeight / rowHeight ) * rowHeight;
+  function sync() {
+    listAInner.style.top =
+      listAHeight + -scrollPosition * listAScrollheight + 'px';
+    listBInner.style.top =
+      -scrollPosition * (listBScrollheight - listBHeight) + 'px';
+    listCInner.style.top = -scrollPosition * listAScrollheight + 'px';
+  }
 
-		listCHeight = height - ( listAHeight + listBHeight );
+  function syncScrollPosition(event) {
+    let scrollRange =
+      document.documentElement.scrollHeight -
+      document.documentElement.offsetHeight;
 
-		listA.style.height = listAHeight + 'px';
-		listB.style.height = listBHeight + 'px';
-		listB.style.top = listAHeight + 'px';
-		listC.style.height = listCHeight + 'px';
+    scrollPosition = window.scrollY / scrollRange;
+    scrollPosition = Math.max(0, Math.min(1, scrollPosition));
 
-		sync();
+    sync();
+  }
 
-	}
+  init();
 
-	function sync() {
-
-		listAInner.style.top = ( listAHeight + ( -scrollPosition * ( listAScrollheight ) ) ) + 'px';
-		listBInner.style.top = ( -scrollPosition * ( listBScrollheight - listBHeight ) ) + 'px';
-		listCInner.style.top = ( -scrollPosition * listAScrollheight ) + 'px';
-
-	}
-
-	function syncScrollPosition( event ) {
-
-		let scrollRange = document.documentElement.scrollHeight - document.documentElement.offsetHeight;
-
-		scrollPosition = window.scrollY / scrollRange;
-		scrollPosition = Math.max( 0, Math.min( 1, scrollPosition ) );
-
-		sync();
-
-	}
-
-	init();
-
-	const timerId = setInterval(() => {
-		if (document.querySelector(".LI-profile-pic")) {
-			document.querySelector(".LI-profile-pic").setAttribute('src', "./media/images/0.jfif");
-			clearInterval(timerId);
-		}	
-	}, 100);
+  const timerId = setInterval(() => {
+    if (document.querySelector('.LI-profile-pic')) {
+      document
+        .querySelector('.LI-profile-pic')
+        .setAttribute('src', './media/images/0.jfif');
+      clearInterval(timerId);
+    }
+  }, 100);
 };
