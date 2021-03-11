@@ -1,39 +1,40 @@
 window.onload = () => {
   const wrapper = document.querySelector('.page-wrapper');
 
+  // Extract list innerHTML and delete original list-wrapper node.
   const originalList = document.querySelector('.list-wrapper');
   const originalListItems = originalList.innerHTML;
   originalList.parentNode.removeChild(originalList);
 
   // Top list
-  const listA = document.createElement('div');
-  listA.className = 'list-wrapper list-a';
-  listA.innerHTML = originalListItems;
-  wrapper.appendChild(listA);
+  const topList = document.createElement('div');
+  topList.className = 'list-wrapper list-a';
+  topList.innerHTML = originalListItems;
+  wrapper.appendChild(topList);
 
   // Monocle list
-  const listB = document.createElement('div');
-  listB.className = 'list-wrapper list-b';
-  listB.innerHTML = originalListItems;
-  wrapper.appendChild(listB);
+  const monocleList = document.createElement('div');
+  monocleList.className = 'list-wrapper list-b';
+  monocleList.innerHTML = originalListItems;
+  wrapper.appendChild(monocleList);
 
   // Bottom list
-  const listC = document.createElement('div');
-  listC.className = 'list-wrapper list-c';
-  listC.innerHTML = originalListItems;
-  wrapper.appendChild(listC);
+  const bottomList = document.createElement('div');
+  bottomList.className = 'list-wrapper list-c';
+  bottomList.innerHTML = originalListItems;
+  wrapper.appendChild(bottomList);
 
-  const listAInner = listA.querySelector('.list');
-  const listCInner = listC.querySelector('.list');
-  const listBInner = listB.querySelector('.list');
+  const topListInner = topList.querySelector('.list');
+  const monocleListInner = monocleList.querySelector('.list');
+  const bottomListInner = bottomList.querySelector('.list');
 
-  const rowHeight = listA.querySelector('.list-item').offsetHeight;
-  const listAScrollheight = listAInner.scrollHeight;
-  const listBScrollheight = listBInner.scrollHeight;
+  const rowHeight = topList.querySelector('.list-item').offsetHeight;
+  const topListScrollheight = topListInner.scrollHeight;
+  const monocleListScrollheight = monocleListInner.scrollHeight;
 
-  let listAHeight = 0,
-    listBHeight = rowHeight * 2,
-    listCHeight = 0;
+  let topListHeight = 0,
+    monocleListHeight = rowHeight * 2,
+    bottomListHeight = 0;
 
   let scrollPosition = 0;
 
@@ -41,6 +42,7 @@ window.onload = () => {
     window.addEventListener('resize', layout);
     window.addEventListener('scroll', syncScrollPosition);
 
+    // make page-wrapper visible
     wrapper.style.visibility = '';
 
     layout();
@@ -51,25 +53,25 @@ window.onload = () => {
   function layout() {
     let height = window.innerHeight;
 
-    listAHeight = (height - listBHeight) / 2;
-    listAHeight = Math.floor(listAHeight / rowHeight) * rowHeight;
+    topListHeight = (height - monocleListHeight) / 2;
+    // topListHeight = Math.floor(topListHeight / rowHeight) * rowHeight;
 
-    listCHeight = height - (listAHeight + listBHeight);
+    bottomListHeight = height - (topListHeight + monocleListHeight);
 
-    listA.style.height = listAHeight + 'px';
-    listB.style.height = listBHeight + 'px';
-    listB.style.top = listAHeight + 'px';
-    listC.style.height = listCHeight + 'px';
+    topList.style.height = topListHeight + 'px';
+    monocleList.style.height = monocleListHeight + 'px';
+    monocleList.style.top = topListHeight + 'px';
+    bottomList.style.height = bottomListHeight + 'px';
 
     sync();
   }
 
   function sync() {
-    listAInner.style.top =
-      listAHeight + -scrollPosition * listAScrollheight + 'px';
-    listBInner.style.top =
-      -scrollPosition * (listBScrollheight - listBHeight) + 'px';
-    listCInner.style.top = -scrollPosition * listAScrollheight + 'px';
+    topListInner.style.top =
+      topListHeight + -scrollPosition * topListScrollheight + 'px';
+    monocleListInner.style.top =
+      -scrollPosition * (monocleListScrollheight - monocleListHeight) + 'px';
+    bottomListInner.style.top = -scrollPosition * topListScrollheight + 'px';
   }
 
   function syncScrollPosition(event) {
