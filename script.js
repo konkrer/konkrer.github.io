@@ -54,7 +54,6 @@ window.onload = () => {
     let height = window.innerHeight;
 
     topListHeight = (height - monocleListHeight) / 2;
-    // topListHeight = Math.floor(topListHeight / rowHeight) * rowHeight;
 
     bottomListHeight = height - (topListHeight + monocleListHeight);
 
